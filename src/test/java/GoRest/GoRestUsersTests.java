@@ -110,6 +110,41 @@ public class GoRestUsersTests {
         ;
     }
 
+    @Test(dependsOnMethods = "createUserObject",priority = 3)
+    public void deleteUserById()
+    {
+        given()
+                .header("Authorization","Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d")
+                .contentType(ContentType.JSON)
+                .log().body()
+                .pathParam("userID", userID)
+
+                .when()
+                .delete("users/{userID}")
+
+                .then()
+                .log().body()
+                .statusCode(204)
+        ;
+    }
+
+    @Test(dependsOnMethods = "deleteUserById")
+    public void deleteUserByIdNegative()
+    {
+        given()
+                .header("Authorization","Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d")
+                .contentType(ContentType.JSON)
+                .log().body()
+                .pathParam("userID", userID)
+
+                .when()
+                .delete("users/{userID}")
+
+                .then()
+                .log().body()
+                .statusCode(404)
+        ;
+    }
 
 
 
