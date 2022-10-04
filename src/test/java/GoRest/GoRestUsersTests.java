@@ -4,6 +4,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -146,7 +147,26 @@ public class GoRestUsersTests {
         ;
     }
 
+    @Test
+    public void getUsers()
+    {
+        Response response=
+        given()
+                .header("Authorization","Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d")
 
+                .when()
+                .get("users")
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .extract().response()
+        ;
+
+        // TODO : 3 usersın id sini alınız (path ve jsonPath ile ayrı ayrı yapınız)
+        // TODO : Tüm gelen veriyi bir nesneye atınız
+        // TODO : GetUserByID testinde dönen user ı bir nesneye atınız.
+    }
 
 
 
