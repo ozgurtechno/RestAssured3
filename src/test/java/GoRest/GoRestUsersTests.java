@@ -163,8 +163,9 @@ public class GoRestUsersTests {
                 .extract().response()
         ;
 
+        // perşembe veya pazartesi, veya salı yapılacak...
         // TODO : 3 usersın id sini alınız (path ve jsonPath ile ayrı ayrı yapınız)
-        // TODO : Tüm gelen veriyi bir nesneye atınız
+        // TODO : Tüm gelen veriyi bir nesneye atınız (google araştırması)
         // TODO : GetUserByID testinde dönen user ı bir nesneye atınız.
     }
 
