@@ -81,7 +81,7 @@ public class CountryTest {
     }
 
 
-    @Test
+    @Test(dependsOnMethods = "createCountry")
     public void createCountryNegative()
     {
         //"message": "The Country with Name \"France 375\" already exists.",
@@ -101,10 +101,96 @@ public class CountryTest {
                         .then()
                         .log().body()
                         .statusCode(400)
-                        //.body("","")
+                        .body("message",equalTo("The Country with Name \""+countryName+"\" already exists."))
         ;
-
     }
+
+    @Test(dependsOnMethods = "createCountry")
+    public void updateCountry()
+    {
+        //"message": "The Country with Name \"France 375\" already exists.",
+        countryName = getRandomName();
+
+        Country country=new Country();
+        country.setId(countryID);
+        country.setName(countryName);
+        country.setCode(countryCode);
+
+        given()
+                .cookies(cookies)
+                .contentType(ContentType.JSON)
+                .body(country)
+
+                .when()
+                .put("school-service/api/countries")
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .body("name",equalTo(countryName))
+        ;
+    }
+
+    @Test(dependsOnMethods = "updateCountry")
+    public void deleteCountryById()
+    {
+        given()
+                .cookies(cookies)
+                .pathParam("countryID", countryID)
+
+                .when()
+                .delete("school-service/api/countries/{countryID}")
+
+                .then()
+                .log().body()
+                .statusCode(200)
+        ;
+    }
+
+    @Test(dependsOnMethods = "deleteCountryById")
+    public void deleteCountryByIdNegative()
+    {
+        given()
+                .cookies(cookies)
+                .pathParam("countryID", countryID)
+                .log().uri()
+                .when()
+                .delete("school-service/api/countries/{countryID}")
+
+                .then()
+                .log().body()
+                .statusCode(400)
+        ;
+    }
+
+    @Test(dependsOnMethods = "deleteCountryById")
+    public void updateCountryNegative()
+    {
+        countryName = getRandomName();
+
+        Country country=new Country();
+        country.setId(countryID);
+        country.setName(countryName);
+        country.setCode(countryCode);
+
+        given()
+                .cookies(cookies)
+                .contentType(ContentType.JSON)
+                .body(country)
+
+                .when()
+                .put("school-service/api/countries")
+
+                .then()
+                .log().body()
+                .statusCode(400)
+                .body("message", equalTo("Country not found"))
+        ;
+    }
+
+
+
+
 }
 
 
