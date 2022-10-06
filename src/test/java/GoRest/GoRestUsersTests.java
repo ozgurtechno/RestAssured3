@@ -165,11 +165,40 @@ public class GoRestUsersTests {
 
         // perşembe veya pazartesi, veya salı yapılacak...
         // TODO : 3 usersın id sini alınız (path ve jsonPath ile ayrı ayrı yapınız)
+        int idUser3path= response.path("[2].id");
+        int idUser3JsonPath = response.jsonPath().getInt("[2].id");
+        System.out.println("idUser3path = " + idUser3path);
+        System.out.println("idUser3JsonPath = " + idUser3JsonPath);
+
+
+
         // TODO : Tüm gelen veriyi bir nesneye atınız (google araştırması)
-        // TODO : GetUserByID testinde dönen user ı bir nesneye atınız.
+
+
     }
 
 
+    @Test
+    public void getUserByIDExtract()
+    {
+        // TODO : GetUserByID testinde dönen user ı bir nesneye atınız.
+        User user=
+        given()
+                .header("Authorization","Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d")
+                .contentType(ContentType.JSON)
+                .pathParam("userID", 3414)
+
+                .when()
+                .get("users/{userID}")
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .extract().as(User.class);
+        ;
+
+        System.out.println("user = " + user);
+    }
 
 
 
@@ -236,6 +265,9 @@ public class GoRestUsersTests {
 }
 
 class User{
+
+
+    private int id;
     private String name;
     private String gender;
     private String email;
@@ -271,6 +303,25 @@ class User{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }
 
